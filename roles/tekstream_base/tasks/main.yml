@@ -123,14 +123,14 @@
   with_items:
     - /opt/appdata/postgres
 
-- name: copy certs into place
-  copy:
-    src: "{{ item }}"
-    dest: "/opt/appdata/traefik/certs/"
-    owner: ubuntu
-    group: ubuntu
-    mode: 0775
-  with_items:
-    - "certs/651f1c6989eb5f4.crt"
-    - "certs/tekstream.com.key"
-  when: hostname_var.stdout == prod_hostname
+# - name: copy certs into place
+#   copy:
+#     src: "{{ item }}"
+#     dest: "/opt/appdata/traefik/certs/"
+#     owner: ubuntu
+#     group: ubuntu
+#     mode: 0775
+#   with_items:
+#     - "certs/651f1c6989eb5f4.crt"
+#     - "certs/tekstream.com.key"
+#   when: hostname_var.stdout == prod_hostname
