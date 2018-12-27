@@ -64,8 +64,8 @@
     path: /opt/appdata
     state: directory
     mode: 0777
-    owner: 1000
-    group: 1000
+    owner: ubuntu
+    group: ubuntu
    
 
 - name: create directories for docker - bin user (2)
@@ -94,7 +94,7 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    owner: 1000
+    owner: ubuntu
     group: 50
   with_items:
     - /opt/appdata/pgadmin
@@ -105,8 +105,8 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    owner: 1000
-    group: 1000
+    owner: ubuntu
+    group: ubuntu
   with_items:
     - /opt/appdata/portainer
     - /opt/appdata/traefik
