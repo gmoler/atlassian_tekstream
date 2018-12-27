@@ -1,0 +1,7 @@
+# ansible-playbook main.yml -i hosts --tags docker_apps
+---
+- hosts: localhost
+  sudo: true
+  roles:
+    - docker
+    - tekstream_base

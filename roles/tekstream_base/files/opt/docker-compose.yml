@@ -1,0 +1,157 @@
+---
+
+version: '2'
+services:
+  traefik:
+    image: traefik
+    #command: --web --docker --docker.domain=docker.localhost --docker.watch --logLevel=ERROR --entryPoints='Name:http Address::80' --entryPoints='Name:https Address::443' --defaultEntryPoints='http' --accessLogsFile='log/access.log'
+    command: --web --docker --docker.domain=docker.localhost --docker.watch --logLevel=ERROR --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' --entryPoints='Name:https Address::443 TLS:tls/651f1c6989eb5f4.crt,tls/tekstream.com.key' --defaultEntryPoints='http,https' --accessLogsFile='log/access.log'
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+      - /opt/appdata/traefik/certs/:/tls
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+  #whoami:
+    #image: emilevauge/whoami
+    #labels:
+      #- "traefik.backend=whoami"
+      #- "traefik.frontend.rule=Path:/whoami"
+  jira:
+    #ports:
+      #- "8080:8080"
+    image: cptactionhank/atlassian-jira:7.13.0
+    container_name: jira
+    volumes:
+      - /opt/appdata/jira/home:/var/atlassian/jira
+      - /opt/appdata/jira/logs:/opt/atlassian/jira/logs
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    labels:
+      - "traefik.backend=jira"
+      - "traefik.frontend.rule=Host:jira.tekstream.com"
+      #- "traefik.enable=false"
+    environment:
+      - "CATALINA_OPTS= -Xms8G -Xmx8G"
+      - X_PROXY_NAME=jira.tekstream.com
+      - X_PROXY_PORT=443
+      - X_PROXY_SECURE=true
+      - X_PROXY_SCHEME=https
+    restart: always
+    depends_on:
+      - postgres
+  confluence:
+    #ports:
+      #- "8090:8090"
+    image: cptactionhank/atlassian-confluence:6.13.0
+    container_name: confluence
+    volumes:
+      - /opt/appdata/confluence/home:/var/atlassian/confluence
+      - /opt/appdata/confluence/logs:/opt/atlassian/confluence/logs
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    labels:
+      - "traefik.backend=confluence"
+      - "traefik.frontend.rule=Host:confluence.tekstream.com"
+      #- "traefik.enable=false"
+    environment:
+      - "CATALINA_OPTS= -Xms8G -Xmx8G"
+      - X_PROXY_NAME=confluence.tekstream.com
+      - X_PROXY_PORT=443
+      - X_PROXY_SECURE=true
+      - X_PROXY_SCHEME=https
+    restart: always
+    depends_on:
+      - postgres
+  bitbucket:
+    #ports:
+      #- "7990:7990"
+      #- "7999:7999"
+    image: atlassian/bitbucket-server:5.16.0
+    container_name: bitbucket
+    volumes:
+      - /opt/appdata/bitbucket/home:/var/atlassian/application-data/bitbucket
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    labels:
+      - "traefik.backend=bitbucket"
+      - "traefik.frontend.rule=Host:bitbucket.tekstream.com"
+      #- "traefik.enable=false"
+    environment:
+      - SERVER_SECURE=true
+      - SERVER_SCHEME=https
+      - SERVER_PROXY_PORT=443
+      - SERVER_PROXY_NAME=bitbucket.tekstream.com
+    restart: always
+    depends_on:
+      - postgres
+  postgres:
+    #ports:
+    #  - "5432:5432"
+    image: postgres:9.5
+    container_name: postgres
+    volumes:
+      - /opt/appdata/postgres:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    labels:
+      - "traefik.enable=false"
+    restart: always
+  pgadmin:
+    ports:
+      - "5050:5050"
+    image: chorss/docker-pgadmin4
+    container_name: pgadmin
+    volumes:
+      - /opt/appdata/pgadmin:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: always
+    labels:
+      - "traefik.backend=pgadmin"
+      - "traefik.frontend.rule=Host:pgadmin.test.com"
+      - "traefik.enable=false"
+    environment:
+      - SERVER_MODE=False
+    depends_on:
+      - postgres
+  portainer:
+    ports:
+      - "9000:9000"
+    image: portainer/portainer
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/appdata/portainer/:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: always
+    labels:
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host:portainer.test.com"
+      - "traefik.enable=false"
+  # mariadb:
+  #   ports:
+  #     - "3306:3306"
+  #   image: mariadb:10.3
+  #   container_name: mariadb
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=changeme
+  #     - MYSQL_DATABASE=RDM
+  #     - MYSQL_USER=tekstream
+  #     - MYSQL_PASSWORD=t3k$tReam
+  #     - MYSQL_RANDOM_ROOT_PASSWORD=yes
+  #   volumes:
+  #     - /opt/appdata/mariadb/:/var/lib/mysql
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
+  #   restart: always
+  #   labels:
+  #     - "traefik.backend=mariadb"
+  #     - "traefik.frontend.rule=Host:mariadev.test.com"
+  #     - "traefik.enable=false"

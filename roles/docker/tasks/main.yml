@@ -1,0 +1,10 @@
+---
+- name: install docker
+  include: task_docker.yml
+  when: task_docker
+
+- name: install docker-compose
+  include: task_docker_compose.yml
+  when: task_docker_compose
+
+

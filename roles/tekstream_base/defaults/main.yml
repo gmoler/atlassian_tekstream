@@ -1,0 +1,14 @@
+---
+swapfile_location: /swapfile
+swapfile_size: 4096MB
+swapfile_swappiness: 10
+swapfile_vfs_cache_pressure: False
+swapfile_use_dd: False
+
+dev-atlassian_disk_uid: UUID=70717648-9c5b-41f0-8609-136ad6bcf192
+prod-atlassian_disk_uid:
+
+dev_hostname: dev-atlassian
+prod_hostname: prod-atlassian
+
+
