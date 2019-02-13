@@ -23,7 +23,7 @@ services:
   jira:
     #ports:
       #- "8080:8080"
-    image: cptactionhank/atlassian-jira:7.13.0
+    image: cptactionhank/atlassian-jira:8.0.0
     container_name: jira
     volumes:
       - /opt/appdata/jira/home:/var/atlassian/jira

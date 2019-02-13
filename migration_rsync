@@ -1,0 +1,5 @@
+ rsync -azP --delete --exclude=home/data/attachments --exclude=home/export ./appdata/jira/ root@132.145.132.166:/opt/appdata/jira/
+ rsync -azP --delete /opt/appdata/jira/ root@132.145.132.166:/opt/appdata/jira/
+ rsync -azP --delete /opt/appdata/confluence/ root@132.145.132.166:/opt/appdata/confluence/
+ rsync -azP --delete /opt/appdata/bitbucket/ root@132.145.132.166:/opt/appdata/bitbucket/
+ rsync -azP --delete /opt/appdata/postgres/ root@132.145.132.166:/opt/appdata/postgres/
