@@ -108,7 +108,7 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin
     volumes:
-      - /opt/appdata/pgadmin:/data
+      - /opt/appdata/pgadmin:/var/lib/pgadmin
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     restart: always
@@ -117,7 +117,8 @@ services:
       - "traefik.frontend.rule=Host:pgadmin.test.com"
       - "traefik.enable=false"
     environment:
-      - SERVER_MODE=False
+      - "PGADMIN_DEFAULT_EMAIL=tekstream@tekstream.com"
+      - "PGADMIN_DEFAULT_PASSWORD=t3kStReam"
     depends_on:
       - postgres
   portainer:

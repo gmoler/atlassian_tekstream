@@ -145,20 +145,22 @@ services:
     restart: always
   pgadmin:
     ports:
-      - "5050:5050"
-    image: chorss/docker-pgadmin4
+      - "5050:80"
+      - "5051:443"
+    image: dpage/pgadmin4
     container_name: pgadmin
     volumes:
-      - /opt/appdata/pgadmin:/data
+      - /opt/appdata/pgadmin:/var/lib/pgadmin
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     restart: always
     labels:
       - "traefik.backend=pgadmin"
-      - "traefik.frontend.rule=Host:pgadmindev.test.com"
+      - "traefik.frontend.rule=Host:pgadmin.test.com"
       - "traefik.enable=false"
     environment:
-      - SERVER_MODE=False
+      - PGADMIN_DEFAULT_EMAIL:admin
+      - PGADMIN_DEFAULT_PASSWORD:admin
     depends_on:
       - postgres
   portainer:
