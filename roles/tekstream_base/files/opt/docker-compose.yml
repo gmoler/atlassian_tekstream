@@ -105,7 +105,7 @@ services:
   pgadmin:
     ports:
       - "5050:5050"
-    image: chorss/docker-pgadmin4
+    image: dpage/pgadmin4
     container_name: pgadmin
     volumes:
       - /opt/appdata/pgadmin:/data

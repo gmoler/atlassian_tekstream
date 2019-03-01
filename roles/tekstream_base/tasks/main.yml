@@ -79,13 +79,13 @@
     - /opt/appdata/bitbucket
     - /opt/appdata/confluence
 
-- name: create directories for docker - daemon user (1)
+- name: create directories for docker - daemon user (2)
   file:
     path: "{{ item }}"
     state: directory
     mode: 0755
-    owner: 1
-    group: 1
+    owner: 2
+    group: 2
   with_items:
     - /opt/appdata/jira
         
@@ -94,7 +94,7 @@
     path: "{{ item }}"
     state: directory
     mode: 0755
-    owner: ubuntu
+    owner: 1000 
     group: 50
   with_items:
     - /opt/appdata/pgadmin

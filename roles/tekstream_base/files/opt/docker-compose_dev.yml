@@ -184,8 +184,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=changeme
       - MYSQL_DATABASE=RDM
-      - MYSQL_USER=tekstream
-      - MYSQL_PASSWORD=t3k$tReam
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
     volumes:
       - /opt/appdata/mariadb/:/var/lib/mysql
