@@ -5,12 +5,12 @@ services:
   traefik:
     image: traefik
     #command: --web --docker --docker.domain=docker.localhost --docker.watch --logLevel=ERROR --entryPoints='Name:http Address::80' --entryPoints='Name:https Address::443' --defaultEntryPoints='http' --accessLogsFile='log/access.log'
-    command: --web --docker --docker.domain=docker.localhost --docker.watch --logLevel=ERROR --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' --entryPoints='Name:https Address::443 TLS:tls/651f1c6989eb5f4.crt,tls/tekstream.com.key' --defaultEntryPoints='http,https' --accessLogsFile='log/access.log'
+    command: --web --docker --docker.domain=docker.localhost --docker.watch --logLevel=ERROR --entryPoints='Name:http Address::80 Redirect.EntryPoint:https' --entryPoints='Name:https Address::443 TLS:CipherSuites:TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 TLS:tls/651f1c6989eb5f4.crt,tls/tekstream.com.key' --defaultEntryPoints='http,https' --accessLogsFile='log/access.log'
     container_name: traefik
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      - "8081:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
