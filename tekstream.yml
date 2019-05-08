@@ -3,5 +3,5 @@
 - hosts: localhost
   sudo: true
   roles:
-    - docker
+    #- docker
     - tekstream_base

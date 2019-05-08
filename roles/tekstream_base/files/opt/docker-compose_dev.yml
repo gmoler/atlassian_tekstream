@@ -23,7 +23,7 @@ services:
   jira:
     #ports:
       #- "8080:8080"
-    image: cptactionhank/atlassian-jira:8.0.0
+    image: cptactionhank/atlassian-jira:8.0.2
     container_name: jira
     volumes:
       - /opt/appdata/jira/home:/var/atlassian/jira
@@ -70,7 +70,7 @@ services:
   confluence:
     #ports:
     #  - "8090:8090"
-    image: cptactionhank/atlassian-confluence:6.13.0
+    image: cptactionhank/atlassian-confluence:6.14.1
     container_name: confluence
     volumes:
       - /opt/appdata/confluence/home:/var/atlassian/confluence
@@ -114,7 +114,7 @@ services:
   bitbucket:
     #ports:
     #  - "7990:7990" - "7999:7999"
-    image: atlassian/bitbucket-server:5.16.0
+    image: atlassian/bitbucket-server:5.16.4
     container_name: bitbucket
     volumes:
       - /opt/appdata/bitbucket/home:/var/atlassian/application-data/bitbucket
@@ -195,4 +195,40 @@ services:
     labels:
       - "traefik.backend=mariadb"
       - "traefik.frontend.rule=Host:mariadev.test.com"
+      - "traefik.enable=false"
+  mysql:
+    ports:
+      - "3307:3306"
+    image: mysql:8
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_DATABASE=RDM
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - /opt/appdata/mysql/:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: always
+    labels:
+      - "traefik.backend=marimysqladb"
+      - "traefik.frontend.rule=Host:mysqldev.test.com"
+      - "traefik.enable=false"
+  mssql:
+    ports:
+      - "1433:1433"
+    image: microsoft/mssql-server-linux:latest
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=changeme
+      - MSSQL_PID=Express
+    volumes:
+      - /opt/appdata/mssql/:/var/opt/mssql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: always
+    labels:
+      - "traefik.backend=mssql"
+      - "traefik.frontend.rule=Host:mssqldev.test.com"
       - "traefik.enable=false"

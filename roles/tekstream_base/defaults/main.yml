@@ -11,4 +11,6 @@ prod-atlassian_disk_uid:
 dev_hostname: dev-atlassian
 prod_hostname: prod-atlassian
 
-
+#Only do one or the other
+do_FirstRun: False
+do_Upgrade: True

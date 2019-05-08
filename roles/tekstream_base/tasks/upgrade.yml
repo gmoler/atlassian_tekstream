@@ -1,0 +1,27 @@
+- name: do the swap file if swap has not been set
+  include: swapon.yml
+  when: result.stdout == ""
+
+- name: set hostname variable
+  command: hostname
+  register: hostname_var
+
+- debug: var=hostname_var
+
+- name: copy docker-compose.yml into position
+  copy:
+    src: "opt/docker-compose.yml"
+    dest: "/opt/docker-compose.yml"
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+  when: hostname_var.stdout == prod_hostname
+
+- name: copy docker-compose_dev.yml into position
+  copy:
+    src: "opt/docker-compose_dev.yml"
+    dest: "/opt/docker-compose.yml"
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+  when: hostname_var.stdout == dev_hostname
