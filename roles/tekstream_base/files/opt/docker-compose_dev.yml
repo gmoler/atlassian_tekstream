@@ -232,3 +232,19 @@ services:
       - "traefik.backend=mssql"
       - "traefik.frontend.rule=Host:mssqldev.test.com"
       - "traefik.enable=false"
+  tasktop:
+    ports:
+      # - "8080:8080"
+      # - "8334:8443"
+    image: postupunsub/tasktop-integration-hub
+    container_name: tasktop
+    # environment:
+    volumes:
+      # - /opt/appdata/tasktop/:/var/opt/mssql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: always
+    labels:
+      - "traefik.backend=tasktop"
+      - "traefik.frontend.rule=Host:tasktop.test.com"
+      - "traefik.enable=false"
