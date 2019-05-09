@@ -233,7 +233,7 @@ services:
       - "traefik.frontend.rule=Host:mssqldev.test.com"
       - "traefik.enable=false"
   tasktop:
-    ports:
+    # ports:
       # - "8080:8080"
       # - "8334:8443"
     image: postupunsub/tasktop-integration-hub
