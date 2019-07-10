@@ -23,7 +23,7 @@ services:
   jira:
     #ports:
       #- "8080:8080"
-    image: cptactionhank/atlassian-jira:8.0.2
+    image: cptactionhank/atlassian-jira:latest
     container_name: jira
     volumes:
       - /opt/appdata/jira/home:/var/atlassian/jira
@@ -145,7 +145,8 @@ services:
     restart: always
   pgadmin:
     ports:
-      - "5050:5050"
+      - "5050:80"
+      - "5051:443"
     image: dpage/pgadmin4
     container_name: pgadmin
     volumes:

@@ -102,9 +102,10 @@ services:
     labels:
       - "traefik.enable=false"
     restart: always
-  pgadmin:
+pgadmin:
     ports:
-      - "5050:5050"
+      - "5050:80"
+      - "5051:443"
     image: dpage/pgadmin4
     container_name: pgadmin
     volumes:
@@ -117,8 +118,8 @@ services:
       - "traefik.frontend.rule=Host:pgadmin.test.com"
       - "traefik.enable=false"
     environment:
-      - "PGADMIN_DEFAULT_EMAIL=tekstream@tekstream.com"
-      - "PGADMIN_DEFAULT_PASSWORD=t3kStReam"
+      - "PGADMIN_DEFAULT_EMAIL=user@domain.com"
+      - "PGADMIN_DEFAULT_PASSWORD=SuperSecret"
     depends_on:
       - postgres
   portainer:
