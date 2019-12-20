@@ -48,7 +48,7 @@ services:
   confluence:
     #ports:
       #- "8090:8090"
-    image: cptactionhank/atlassian-confluence:6.15.6
+    image: cptactionhank/atlassian-confluence:6.15.9
     container_name: confluence
     volumes:
       - /opt/appdata/confluence/home:/var/atlassian/confluence
