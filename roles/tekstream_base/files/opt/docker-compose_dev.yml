@@ -155,7 +155,7 @@ services:
     restart: always
     labels:
       - "traefik.backend=pgadmin"
-      - "traefik.frontend.rule=Host:pgadmin.test.com"
+      - "traefik.frontend.rule=Host:pgadmin.tekstream.com"
       - "traefik.enable=false"
     environment:
       - "PGADMIN_DEFAULT_EMAIL=tekstream@tekstream.com"
@@ -175,8 +175,41 @@ services:
     restart: always
     labels:
       - "traefik.backend=portainer"
-      - "traefik.frontend.rule=Host:portainerdev.test.com"
+      - "traefik.frontend.rule=Host:portainerdev.tekstream.com"
       - "traefik.enable=false"
+  snipe-mysql:
+    container_name: snipe-mysql
+    image: mysql:5.6
+    env_file:
+      - - /opt/appdata/snipeit/.env
+    volumes:
+      # - snipesql-vol:/var/lib/mysql
+      - /opt/appdata/snipeit/mysql/:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    command: --default-authentication-plugin=mysql_native_password
+    # expose:
+    #   - "3306"
+    labels:
+      - "traefik.backend=mysql"
+      - "traefik.frontend.rule=Host:mysqldev.tekstream.com"
+      - "traefik.enable=false"
+  snipe-it:
+    image: snipe/snipe-it
+    container_name: snipe-it
+    env_file:
+      - /opt/appdata/snipeit/.env
+    # ports:
+    #   - "3051:80"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - snipe-mysql
+    labels:
+      - "traefik.backend=snipeit"
+      - "traefik.frontend.rule=Host:snipeitdev.tekstream.com"
+      - "traefik.enable=true"
   # mariadb:
   #   ports:
   #     - "3306:3306"
@@ -193,7 +226,7 @@ services:
   #   restart: always
   #   labels:
   #     - "traefik.backend=mariadb"
-  #     - "traefik.frontend.rule=Host:mariadev.test.com"
+  #     - "traefik.frontend.rule=Host:mariadev.tekstream.com"
   #     - "traefik.enable=false"
   # mysql:
   #   ports:
@@ -211,7 +244,7 @@ services:
   #   restart: always
   #   labels:
   #     - "traefik.backend=marimysqladb"
-  #     - "traefik.frontend.rule=Host:mysqldev.test.com"
+  #     - "traefik.frontend.rule=Host:mysqldev.tekstream.com"
   #     - "traefik.enable=false"
   # mssql:
   #   ports:
@@ -229,7 +262,7 @@ services:
   #   restart: always
   #   labels:
   #     - "traefik.backend=mssql"
-  #     - "traefik.frontend.rule=Host:mssqldev.test.com"
+  #     - "traefik.frontend.rule=Host:mssqldev.tekstream.com"
   #     - "traefik.enable=false"
   # tasktop:
   #   ports:
@@ -245,5 +278,5 @@ services:
   #   restart: always
   #   labels:
   #     - "traefik.backend=tasktop"
-  #     - "traefik.frontend.rule=Host:tasktop.test.com"
+  #     - "traefik.frontend.rule=Host:tasktop.tekstream.com"
   #     - "traefik.enable=false"
