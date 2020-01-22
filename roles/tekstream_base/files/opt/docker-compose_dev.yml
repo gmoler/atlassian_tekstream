@@ -178,34 +178,39 @@ services:
       - "traefik.frontend.rule=Host:portainerdev.tekstream.com"
       - "traefik.enable=false"
   snipe-mysql:
+    image: mysql:5
     container_name: snipe-mysql
-    image: mysql:5.6
-    env_file:
-      - - /opt/appdata/snipeit/.env
+    restart: always
     volumes:
-      # - snipesql-vol:/var/lib/mysql
       - /opt/appdata/snipeit/mysql/:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-    command: --default-authentication-plugin=mysql_native_password
-    # expose:
-    #   - "3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD="t3k$tReam"
+      - MYSQL_USER=snipe
+      - MYSQL_PASSWORD="t3k$tReam"
+      - MYSQL_DATABASE=snipe
     labels:
       - "traefik.backend=mysql"
       - "traefik.frontend.rule=Host:mysqldev.tekstream.com"
       - "traefik.enable=false"
   snipe-it:
-    image: snipe/snipe-it
+    image: linuxserver/snipe-it:latest
     container_name: snipe-it
-    env_file:
-      - /opt/appdata/snipeit/.env
-    # ports:
-    #   - "3051:80"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+    restart: always
     depends_on:
       - snipe-mysql
+    volumes:
+      - /opt/appdata/snipeit/snipeit_config/:/config
+    environment:
+      - APP_URL=https://snipeitdev.tekstream.com
+      - MYSQL_PORT_3306_TCP_ADDR=snipe-mysql
+      - MYSQL_PORT_3306_TCP_PORT=3306
+      - MYSQL_DATABASE=snipe
+      - MYSQL_USER=snipe
+      - MYSQL_PASSWORD="t3k$tream"
+      - PGID=1001
+      - PUID=1001
     labels:
       - "traefik.backend=snipeit"
       - "traefik.frontend.rule=Host:snipeitdev.tekstream.com"
