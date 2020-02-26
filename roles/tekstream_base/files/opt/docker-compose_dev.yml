@@ -69,7 +69,7 @@ services:
   confluence:
     #ports:
     #  - "8090:8090"
-    image: cptactionhank/atlassian-confluence:7.2.0
+    image: cptactionhank/atlassian-confluence:7.3.2
     container_name: confluence
     volumes:
       - /opt/appdata/confluence/home:/var/atlassian/confluence
@@ -186,9 +186,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - MYSQL_ROOT_PASSWORD="t3k$tReam"
+      - MYSQL_ROOT_PASSWORD=t3k$$tReam
       - MYSQL_USER=snipe
-      - MYSQL_PASSWORD="t3k$tReam"
+      - MYSQL_PASSWORD=t3k$$tReam
       - MYSQL_DATABASE=snipe
     labels:
       - "traefik.backend=mysql"
@@ -208,7 +208,7 @@ services:
       - MYSQL_PORT_3306_TCP_PORT=3306
       - MYSQL_DATABASE=snipe
       - MYSQL_USER=snipe
-      - MYSQL_PASSWORD="t3k$tream"
+      - MYSQL_PASSWORD=t3k$$tream
       - PGID=1001
       - PUID=1001
     labels:
