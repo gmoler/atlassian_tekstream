@@ -133,7 +133,7 @@ services:
   postgres:
     #ports:
     #  - "5432:5432"
-    image: postgres:10
+    image: postgres:10.12
     container_name: postgres
     volumes:
       - /opt/appdata/postgres10:/var/lib/postgresql/data
