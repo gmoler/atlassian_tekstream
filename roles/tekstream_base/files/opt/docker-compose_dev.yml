@@ -208,7 +208,7 @@ services:
       - MYSQL_PORT_3306_TCP_PORT=3306
       - MYSQL_DATABASE=snipe
       - MYSQL_USER=snipe
-      - MYSQL_PASSWORD=t3k$$tream
+      - MYSQL_PASSWORD=t3k$$tReam
       - PGID=1001
       - PUID=1001
     labels:
